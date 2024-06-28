@@ -5,4 +5,5 @@ export type listTour = {
     rating: number;
     thumbnail: string;
     category: string;
+    id :number
 }
