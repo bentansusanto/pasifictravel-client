@@ -228,11 +228,11 @@ const TourPage = () => {
                 </div>
               </div>
               <div className="mt-4 md:ml-4 md:mt-0 md:w-1/3">
-                <div className="rounded-lg border p-5 shadow-lg">
+                <div className="rounded-lg bg-white p-5 ">
                   <div className="">
                     <h2 className="mb-4 text-xl font-semibold">Booking Info</h2>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow-sm">
+                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 ">
                         <div className="flex items-center space-x-2">
                           <FaCalendarAlt className="text-gray-500" />
                           <span className="text-gray-700">
@@ -241,7 +241,7 @@ const TourPage = () => {
                         </div>
                         <VscTriangleDown className="text-gray-500" />
                       </div>
-                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow-sm">
+                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 ">
                         <div className="flex items-center space-x-2">
                           <FaUser className="text-gray-500" />
                           <span className="text-gray-700">2 Person</span>
@@ -275,7 +275,7 @@ const TourPage = () => {
                     </button>
                   </div>
                 </div>
-                <div className="mt-4 rounded-lg border p-4 shadow-lg">
+                <div className="mt-4 rounded-lg bg-white p-4">
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-lg font-semibold">Customer Review</h2>
                     <a href="#" className="flex items-center text-orange-500">
@@ -321,7 +321,7 @@ const TourPage = () => {
                 </div>
                 {/* akhir */}
                 {/* Important Information */}
-                <div className="mx-auto my-5 max-w-xl rounded-lg bg-white p-6 shadow-md">
+                <div className="mx-auto my-5 max-w-xl rounded-lg bg-white p-6">
                   <h2 className="mb-4 text-lg font-semibold">
                     Important Information
                   </h2>
