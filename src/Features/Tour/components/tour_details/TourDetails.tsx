@@ -14,20 +14,12 @@ import { VscTriangleDown } from "react-icons/vsc";
 import { dollar } from "@/config/Currency";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaStar, FaChevronRight } from "react-icons/fa";
-import Head from "next/head";
 import { GoTriangleRight } from "react-icons/go";
 
 const TourPage = () => {
   const { isMobile } = Mobile();
 
-  const [bookingInfo, setBookingInfo] = useState({
-    startDate: "2 Mei 2024",
-    endDate: "7 Mei 2024",
-    persons: 2,
-    subtotal: 1000,
-    tax: 8,
-    totalPrice: 1008,
-  });
+
 
   return (
     <div className={`${fonts.className}`}>
