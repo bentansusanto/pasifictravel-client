@@ -1,6 +1,5 @@
 import { Mobile } from "@/config/MediaQuery";
 import { fonts } from "@/config/Themes";
-import { useState } from "react";
 import { CiMap } from "react-icons/ci";
 import { SlCalender } from "react-icons/sl";
 import { listDataTours } from "@/pages/Tour/index";
@@ -14,20 +13,10 @@ import { VscTriangleDown } from "react-icons/vsc";
 import { dollar } from "@/config/Currency";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaStar, FaChevronRight } from "react-icons/fa";
-import Head from "next/head";
 import { GoTriangleRight } from "react-icons/go";
 
 const TourPage = () => {
   const { isMobile } = Mobile();
-
-  const [bookingInfo, setBookingInfo] = useState({
-    startDate: "2 Mei 2024",
-    endDate: "7 Mei 2024",
-    persons: 2,
-    subtotal: 1000,
-    tax: 8,
-    totalPrice: 1008,
-  });
 
   return (
     <div className={`${fonts.className}`}>
@@ -131,7 +120,6 @@ const TourPage = () => {
                       <FaCircleCheck className="mx-2 text-lg text-green-500" />
                       <p className="text-sm text-gray-600">
                         Transportation by air conditioned vehicles.
-                        
                       </p>
                     </div>
                   </div>
@@ -228,11 +216,11 @@ const TourPage = () => {
                 </div>
               </div>
               <div className="mt-4 md:ml-4 md:mt-0 md:w-1/3">
-                <div className="rounded-lg bg-white p-5 ">
+                <div className="rounded-lg bg-white p-5">
                   <div className="">
                     <h2 className="mb-4 text-xl font-semibold">Booking Info</h2>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 ">
+                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4">
                         <div className="flex items-center space-x-2">
                           <FaCalendarAlt className="text-gray-500" />
                           <span className="text-gray-700">
@@ -241,7 +229,7 @@ const TourPage = () => {
                         </div>
                         <VscTriangleDown className="text-gray-500" />
                       </div>
-                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4 ">
+                      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-4">
                         <div className="flex items-center space-x-2">
                           <FaUser className="text-gray-500" />
                           <span className="text-gray-700">2 Person</span>
@@ -328,7 +316,7 @@ const TourPage = () => {
                   <ul className="list-none space-y-4 text-sm text-gray-500">
                     <li className="flex">
                       <span className="mr-2">•</span>
-                      <span className="flex-1 text-justify ">
+                      <span className="flex-1 text-justify">
                         Cancellation can be done a night before for half day
                         morning and full day tours in Istanbul and 4 hours prior
                         to afternoon tour to avoid penalty, otherwise full tour
