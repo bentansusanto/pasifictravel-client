@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ListCountry } from "@/pages/document_and_visa/logic";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { truncateText } from "./Logic/TruncatedText";
+import Link from "next/link";
 
 const CountrySection = () => {
   const { isMobile } = Mobile();
@@ -37,12 +38,14 @@ const CountrySection = () => {
                 World’s Best Visas Requested Countries
               </h2>
             </div>
-            <button className="mt-9 flex items-center rounded-lg border-2 bg-gray-200 text-xs text-gray-500 transition duration-300 hover:bg-gray-600 hover:text-white">
-              Show More
-            </button>
+            <Link href="/ListcountryFilter">
+              <button className="mt-9 flex items-center rounded-lg border-2 bg-gray-200 text-xs text-gray-500 transition duration-300 hover:bg-gray-600 hover:text-white">
+                Show More
+              </button>
+            </Link>
           </div>
           <div className="mt-10 flex gap-5">
-            {ListCountry.map((list, idx) => (
+            {ListCountry.slice(0, 4).map((list, idx) => (
               <div key={idx} className="">
                 <div className="group relative">
                   <Image
@@ -94,7 +97,12 @@ const CountrySection = () => {
                   ListCountry.find((country) => country.id === activeModalId)
                     ?.DescWord || ""
                 }
+                capital_City={
+                  ListCountry.find((country) => country.id === activeModalId)
+                    ?.Capital_City || ""
+                }
                 id={activeModalId}
+                Tiype_ViPa={"string"}
               />
             )}
           </div>

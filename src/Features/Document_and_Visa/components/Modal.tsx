@@ -3,7 +3,7 @@ import { fonts } from "@/config/Themes";
 import React, { FC } from "react";
 import Image from "next/image";
 import RadioButtonComponent from "./section/RadioButtonComponent";
-import DaftarHargaComponent from "./section/daftarhargacomponent";
+import DaftarHargaComponent from "./section/DaftarHargaComponent";
 import DetailReq from "./section/DetailReq";
 
 const Modal: FC<modalProps> = ({
@@ -12,6 +12,7 @@ const Modal: FC<modalProps> = ({
   NameCountry,
   NameFlag,
   descWords,
+  capital_City,
   id,
 }) => {
   if (!isVisible) return null;
@@ -49,7 +50,7 @@ const Modal: FC<modalProps> = ({
           </div>
           {/* descripsi */}
           <div className="hide-scrollbar relative my-6 max-h-[33vh] overflow-auto">
-            <div className="">
+            <div className="text-left">
               <div>
                 <h4 className="text-lg font-semibold">{NameCountry}</h4>
                 <p className="py-1 text-xs text-gray-400">Receive a pasport</p>
@@ -59,7 +60,7 @@ const Modal: FC<modalProps> = ({
               </div>
             </div>
             {/* choose category */}
-            <div className="pb-2 pt-4">
+            <div className="pb-2 pt-4 text-left">
               <h4 className="text-15px font-semibold">
                 Choose category of visa
               </h4>
@@ -69,11 +70,11 @@ const Modal: FC<modalProps> = ({
             </div>
 
             {/* detail harga */}
-            <div className="pb-3 pt-1">
+            <div className="pb-3 pt-1 text-left">
               <DaftarHargaComponent />
             </div>
             {/* Pasport requirements  */}
-            <div className="py-2">
+            <div className="py-2 text-left">
               <DetailReq />
             </div>
           </div>

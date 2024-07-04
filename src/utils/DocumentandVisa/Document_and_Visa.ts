@@ -8,8 +8,11 @@ export type CountrySection = {
   Desc: string;
   Flag: string;
   FlagName: string;
+  Capital_City: string;
   DescWord: string;
   id: number;
+  Type_VisaorPass: string;
+  type_Country: string;
 };
 
 export type PriceDetailProps = {
