@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent, useRef, useCallback } from "react";
 import { Mobile } from "@/config/MediaQuery";
 import { fonts } from "@/config/Themes";
 import { FilterCountryCaption } from "./logic";
@@ -14,50 +14,71 @@ import {
   sortingDocumentCountry,
 } from "@/pages/document_and_visa/logic";
 import { CountrySection } from "@/utils/DocumentandVisa/Document_and_Visa";
+import { Spinner } from "@radix-ui/themes";
 
 const ListCountryFilter = () => {
   const { isMobile } = Mobile();
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeModalId, setActiveModalId] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState<number>(6);
-  const [selectedFilter, setSelectedFilter] = useState<string>("");
-  const [selectedSorting, setSelectedSorting] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedSorting, setSelectedSorting] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const openModal = (id: number) => {
-    setActiveModalId(id);
-    setIsModalVisible(true);
+  const [locationInput, setLocationInput] = useState("");
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [autoLoad, setAutoLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const locationRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(event.target as Node)
+      ) {
+        setShowLocationDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredCountries = ListCountry.filter((country) =>
+    country.FlagName.toLowerCase().includes(locationInput.toLowerCase()),
+  ).slice(0, 8);
+
+  const handleLocationSelect = (country: CountrySection) => {
+    setLocationInput(country.FlagName);
+    setSearchTerm(country.FlagName.toLowerCase());
+    setShowLocationDropdown(false);
   };
 
-  const closeModal = () => {
-    setIsModalVisible(false);
-    setActiveModalId(null);
-  };
-
-  const handleOpenModal = (id: number) => () => openModal(id);
-
-  const showMoreItems = () => {
-    setVisibleCount((prevCount) => prevCount + 6);
-  };
-
-  const resetItems = () => {
-    setVisibleCount(6);
-  };
+  const showMoreItems = useCallback(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setVisibleCount((prevCount) => prevCount + 6);
+      setLoading(false);
+    }, 1000); // Simulate loading delay
+  }, []);
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilter((preFilter) => (preFilter === filter ? "" : filter));
-    resetItems();
   };
 
   const handleSortingChange = (sorting: string) => {
     setSelectedSorting((prevSorting) =>
       prevSorting === sorting ? "" : sorting,
     );
-    resetItems();
   };
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLocationInput(event.target.value);
     setSearchTerm(event.target.value.toLowerCase());
-    resetItems();
+    setShowLocationDropdown(true);
   };
 
   const filterCountries = (countries: CountrySection[]) => {
@@ -71,45 +92,75 @@ const ListCountryFilter = () => {
             selectedFilter.toLowerCase(),
       );
     }
-    // ini untuk sorting by search
     if (searchTerm) {
       filteredCountries = filteredCountries.filter((country) =>
         country.FlagName.toLowerCase().includes(searchTerm),
       );
     }
-
     return filteredCountries;
   };
 
   const sortCountries = (countries: CountrySection[]) => {
-    let sortedCountries = [...countries];
-
     if (selectedSorting === "Popular") {
-      sortedCountries = sortedCountries.filter(
-        (country) => country.type_Country === "Popular",
-      );
-    } else if (selectedSorting === "Tidak Popular") {
-      sortedCountries = sortedCountries.filter(
+      return countries.filter((country) => country.type_Country === "Popular");
+    }
+    if (selectedSorting === "Tidak Popular") {
+      return countries.filter(
         (country) => country.type_Country === "Tidak Popular",
       );
     }
-
-    return sortedCountries;
+    return countries;
   };
 
   const filteredAndSortedCountries = sortCountries(
     filterCountries(ListCountry),
   );
 
+  const openModal = (id: number) => {
+    setActiveModalId(id);
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+    setActiveModalId(null);
+  };
+
+  useEffect(() => {
+    if (!autoLoad) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          showMoreItems();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [autoLoad, showMoreItems]);
+
+  const handleShowMore = () => {
+    showMoreItems();
+    setAutoLoad(true);
+  };
+
   return (
-    <div className={` ${fonts.className}`}>
+    <div className={fonts.className}>
       {isMobile ? (
-        // Mobile device
         <div></div>
       ) : (
-        // Desktop and Tablet Device
         <div className="mt-20 md:px-8 lg:px-24">
-          <div className={"space-y-3"}>
+          <div className="space-y-3">
             <h1 className="text-2xl font-semibold md:w-[55%] lg:w-[35%]">
               {FilterCountryCaption.HeadTitle}
             </h1>
@@ -118,22 +169,39 @@ const ListCountryFilter = () => {
             </p>
           </div>
           <div className="mt-10 flex lg:space-x-10">
-            <div className="block">
-              {/* Filter, Category, dan Sorting */}
+            <div>
               <div className="sticky top-10 space-y-5">
-                {/* Search Tour */}
+                {/* Search Country Section */}
                 <div className="h-auto rounded-md bg-white p-4 md:w-52 lg:w-64">
                   <h2 className="font-semibold">Search Country</h2>
-                  <div className="mt-4 flex items-center space-x-3 rounded-md bg-gray-100 p-3">
+                  <div
+                    className="mt-4 flex items-center space-x-3 rounded-md bg-gray-100 p-3"
+                    ref={locationRef}
+                  >
                     <GrMap className="text-[18px] text-gray-400" />
                     <input
+                      value={locationInput}
                       placeholder="Search Country"
                       className="w-full bg-transparent text-sm outline-none placeholder:text-sm"
                       onChange={handleSearchChange}
+                      onClick={() => setShowLocationDropdown(true)}
                     />
+                    {showLocationDropdown && (
+                      <div className="absolute left-0 top-28 z-10 w-full rounded-md bg-white shadow-lg">
+                        {filteredCountries.map((country) => (
+                          <div
+                            key={country.id}
+                            className="cursor-pointer p-2 hover:bg-gray-200"
+                            onClick={() => handleLocationSelect(country)}
+                          >
+                            {country.FlagName}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-                {/* Category */}
+                {/* List Document Section */}
                 <div className="h-auto rounded-md bg-white p-4 md:w-52 lg:w-64">
                   <h2 className="font-semibold">List Document</h2>
                   <div className="mt-5 space-y-2">
@@ -148,7 +216,6 @@ const ListCountryFilter = () => {
                         ) : (
                           <IoIosRadioButtonOff className="mr-2 text-xl text-gray-400" />
                         )}
-
                         <p
                           className={`text-sm ${
                             selectedFilter === list
@@ -162,7 +229,7 @@ const ListCountryFilter = () => {
                     ))}
                   </div>
                 </div>
-                {/* Sorting */}
+                {/* Sorting Section */}
                 <div className="h-auto rounded-md bg-white p-4 md:w-52 lg:w-64">
                   <h2 className="font-semibold">Sorting</h2>
                   <div className="mt-5 space-y-2">
@@ -193,12 +260,12 @@ const ListCountryFilter = () => {
               </div>
             </div>
             <div>
-              {/* viewsorting */}
+              {/* Country List Section */}
               <div className="grid md:grid-cols-3 md:gap-5 lg:grid-cols-3 lg:gap-8">
                 {filteredAndSortedCountries
                   .slice(0, visibleCount)
-                  .map((list, idx) => (
-                    <div key={idx} className="">
+                  .map((list) => (
+                    <div key={list.id}>
                       <div className="group relative">
                         <Image
                           src={require(
@@ -209,7 +276,7 @@ const ListCountryFilter = () => {
                         />
                         <div className="absolute inset-0 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity group-hover:flex">
                           <HiMagnifyingGlass
-                            onClick={handleOpenModal(list.id)}
+                            onClick={() => openModal(list.id)}
                             className="text-3xl text-white hover:text-4xl"
                           />
                         </div>
@@ -229,7 +296,7 @@ const ListCountryFilter = () => {
                         </div>
                         <div>
                           <p className="text-xs text-gray-500">
-                            {truncateText(`${list.DescWord}`, 69)}
+                            {truncateText(list.DescWord, 69)}
                           </p>
                         </div>
                       </div>
@@ -265,21 +332,23 @@ const ListCountryFilter = () => {
                 )}
               </div>
               <div className="mt-10 text-center">
-                {visibleCount < filteredAndSortedCountries.length && (
-                  <button
-                    onClick={showMoreItems}
-                    className="mr-2 rounded-md bg-orange-500 px-4 py-2 text-white"
-                  >
-                    Show More
-                  </button>
-                )}
-                {visibleCount > 6 && (
-                  <button
-                    onClick={resetItems}
-                    className="rounded-md bg-red-500 px-4 py-2 text-white"
-                  >
-                    Close
-                  </button>
+                {visibleCount < filteredAndSortedCountries.length &&
+                  !autoLoad && (
+                    <button
+                      onClick={handleShowMore}
+                      className="mr-2 rounded-md bg-orange-500 px-4 py-2 text-white"
+                    >
+                      Show More
+                    </button>
+                  )}
+                {autoLoad && <div ref={loadMoreRef}></div>}
+                {loading && (
+                  <div className="mt-4 flex justify-center">
+                    {/* <Spinner.Root className="inline-block">
+                      <Spinner.Indicator className="h-8 w-8 animate-spin text-gray-600" />
+                    </Spinner.Root> */}
+                    <Spinner />
+                  </div>
                 )}
               </div>
             </div>
