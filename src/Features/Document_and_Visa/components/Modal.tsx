@@ -1,12 +1,12 @@
 import { modalProps } from "@/utils/Modal/modalProps";
 import { fonts } from "@/config/Themes";
-import React, { FC } from "react";
+import React from "react";
 import Image from "next/image";
 import RadioButtonComponent from "./section/RadioButtonComponent";
 import DaftarHargaComponent from "./section/DaftarHargaComponent";
 import DetailReq from "./section/DetailReq";
 
-const Modal: FC<modalProps> = ({
+const Modal = ({
   isVisible,
   onClose,
   NameCountry,
@@ -14,7 +14,7 @@ const Modal: FC<modalProps> = ({
   descWords,
   capital_City,
   id,
-}) => {
+}: modalProps) => {
   if (!isVisible) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {

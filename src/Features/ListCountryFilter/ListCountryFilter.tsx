@@ -155,7 +155,7 @@ const ListCountryFilter = () => {
   };
 
   return (
-    <div className={fonts.className}>
+    <div className={`${fonts.className}`}>
       {isMobile ? (
         <div></div>
       ) : (
@@ -168,7 +168,7 @@ const ListCountryFilter = () => {
               {FilterCountryCaption.DescHead}
             </p>
           </div>
-          <div className="mt-10 flex lg:space-x-10">
+          <div className="mt-10 flex md:space-x-6   lg:space-x-10">
             <div>
               <div className="sticky top-10 space-y-5">
                 {/* Search Country Section */}

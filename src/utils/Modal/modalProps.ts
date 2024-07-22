@@ -8,3 +8,15 @@ export type modalProps = {
   id: Number;
   Tiype_ViPa: string;
 };
+
+export type modalPropsProvider = {
+  isVisible: boolean;
+  onClose: () => void;
+  headPicture: string[];
+  city: string;
+  country: string;
+  descPic: string;
+  typeDiagnosa: string[];
+  providersType: string;
+  id: number;
+};
