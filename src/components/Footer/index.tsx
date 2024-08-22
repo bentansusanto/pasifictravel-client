@@ -1,4 +1,4 @@
-import LogoPasificTravel from "@/assets/images/logo-pacific-travelindo.svg";
+import LogoPasificTravel from "@/assets/images/Homepage/logo-pacific-travelindo.svg";
 import { Mobile } from "@/config/MediaQuery";
 import { fonts } from "@/config/Themes";
 import { contact, navData, navCompany, customerSupport } from "@/libs/Content/NavFoot";
