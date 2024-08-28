@@ -13,10 +13,63 @@ const HeroSection = () => {
     <div className={`${fonts.className} ${!isMobile && "md:ml-8 lg:ml-24"}`}>
       {isMobile ? (
         // Mobile Device
-        <></>
+        <div className="flex flex-col items-center space-y-6 p-4">
+          {/* Content */}
+          <div className="text-left">
+            <p className="text-xs font-semibold text-[#FF8500]">
+              {heroData.subHeading}
+            </p>
+            <h1 className="py-3 text-2xl font-bold leading-tight">
+              {heroData.heading}
+            </h1>
+            <p className="mt-2 text-xs text-gray-500">{heroData.description}</p>
+          </div>
+
+          {/* Form Search tour */}
+          <div className="flex items-center space-x-3 rounded-md bg-white p-3">
+            <div className="space-y-2">
+              <p className="text-sm text-gray-400">Where you go</p>
+              <div className="flex items-center space-x-2 rounded-md bg-gray-100 px-2 py-2.5">
+                <Image src={IconMap} alt="icon-maps" />
+                <input
+                  placeholder="Location"
+                  className="w-full bg-transparent text-sm outline-none placeholder:text-sm"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-400">Person</p>
+              <div className="flex items-center space-x-2 rounded-md bg-gray-100 px-2 py-2.5">
+                <Image src={IconPerson} alt="icon-person" />
+                <input
+                  placeholder="Person"
+                  className="w-20 bg-transparent text-sm outline-none placeholder:text-sm"
+                />
+              </div>
+            </div>
+            <div className="pt-7">
+              <button className="rounded-md bg-[#FD8400] text-white">
+                <LuSearch className="text-lg" />
+              </button>
+            </div>
+          </div>
+
+          {/* Affiliate company */}
+          <div className="mt-10 flex items-center space-x-5">
+            {heroData.logo.map((list, idx) => (
+              <div key={idx}>
+                <Image
+                  src={require(`@/assets/images/Homepage/${list}`)}
+                  alt="logo-affiliate"
+                  className="grayscale hover:grayscale-0"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         // Desktop & Tablet Device
-        <div className="flex items-center lg:space-x-20 md:space-x-10">
+        <div className="flex items-center md:space-x-10 lg:space-x-20">
           {/* Content */}
           <div>
             <div className="space-y-3">
@@ -73,7 +126,6 @@ const HeroSection = () => {
             </div>
           </div>
           {/* Background image hero */}
-
           <Image src={BgHeroSection} alt="hero-section" className="w-[55%]" />
         </div>
       )}
