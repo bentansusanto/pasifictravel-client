@@ -16,6 +16,12 @@ export type NavProps = {
   dropDown?: ServiceProps[];
 };
 
+export type listTour = {
+  heading: string;
+  subHeading?: string;
+  description?: string;
+};
+
 export type ContentProps = {
   heading: string;
   subHeading?: string;
@@ -29,6 +35,6 @@ export type Contact = {
 
 export interface CustomerSupport extends ServiceProps {}
 
-export interface SocialMedia extends ServiceProps{}
+export interface SocialMedia extends ServiceProps {}
 
-export interface NavCompany extends ServiceProps{}
+export interface NavCompany extends ServiceProps {}
