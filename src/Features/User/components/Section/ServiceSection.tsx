@@ -3,6 +3,7 @@ import { fonts } from "@/config/Themes";
 import { serviceData } from "@/libs/Content/Homepage";
 import Image from "next/image";
 
+
 const ServiceSection = () => {
   const { isMobile } = Mobile();
   return (
