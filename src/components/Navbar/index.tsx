@@ -1,3 +1,11 @@
+import LogoPasificTravel from '@/assets/images/Homepage/logo-pacific-travelindo.svg'
+import { Mobile } from "@/config/MediaQuery";
+import { fonts } from "@/config/Themes";
+import { languages, navData } from "@/libs/Content/NavFoot";
+import { Popover } from "@radix-ui/themes";
+import Image from "next/image";
+import Link from "next/link";
+import { GoChevronDown } from "react-icons/go";
 import React, { useState } from "react";
 import LogoPasificTravel from "@/assets/images/Homepage/logo-pacific-travelindo.svg"; // Importing the logo image
 import { Mobile } from "@/config/MediaQuery"; // Importing a custom hook for detecting mobile view
@@ -24,6 +32,7 @@ const Navbar: React.FC = () => {
   const toggleService = (service: string) => {
     setOpenService(openService === service ? null : service);
   };
+
 
   return (
     <div
